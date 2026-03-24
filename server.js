@@ -64,7 +64,7 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const stream = await client.chat.completions.create({
-      model: 'Qwen/Qwen3-8B',
+      model: 'deepseek-ai/DeepSeek-V3',
       max_tokens: 1024,
       stream: true,
       messages: [

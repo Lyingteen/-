@@ -443,6 +443,114 @@
       margin: 0 20px 12px;
     }
 
+    /* ─── ABOUT SECTION ───────────────────────────────────── */
+    .sub-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--teal);
+      margin: 20px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sub-title:first-child { margin-top: 0; }
+    .sub-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(74,158,175,0.25), transparent);
+    }
+
+    .sub-divider {
+      height: 1px;
+      background: linear-gradient(to right, rgba(74,158,175,0.12), rgba(74,158,175,0.04), rgba(74,158,175,0.12));
+      margin: 20px 0;
+    }
+
+    /* Education */
+    .edu-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .edu-item {
+      background: rgba(234,245,248,0.45);
+      border: 1px solid rgba(74,158,175,0.14);
+      border-radius: 12px;
+      padding: 13px 14px 13px 18px;
+      position: relative;
+    }
+    .edu-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px; bottom: 10px;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--teal), var(--blue-gray));
+      border-radius: 3px;
+    }
+    .edu-school { font-weight: 700; font-size: 0.93rem; color: var(--text); }
+    .edu-degree { font-size: 0.87rem; color: var(--teal-dark); margin-top: 2px; }
+    .edu-meta   { font-size: 0.79rem; color: var(--text-muted); margin-top: 3px; }
+    .edu-tags   { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .mini-tag {
+      padding: 2px 8px; border-radius: 10px; font-size: 0.74rem;
+      background: rgba(74,158,175,0.10); color: var(--teal-dark);
+      border: 1px solid rgba(74,158,175,0.18);
+    }
+
+    /* Internship */
+    .intern-item {
+      background: rgba(234,245,248,0.45);
+      border: 1px solid rgba(74,158,175,0.14);
+      border-radius: 12px;
+      padding: 13px 14px 13px 18px;
+      position: relative;
+    }
+    .intern-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 10px; bottom: 10px;
+      width: 3px;
+      background: linear-gradient(to bottom, #f0a030, #f0c060);
+      border-radius: 3px;
+    }
+    .intern-company { font-weight: 700; font-size: 0.93rem; color: var(--text); }
+    .intern-role    { font-size: 0.87rem; color: var(--teal-dark); margin-top: 2px; }
+    .intern-period  { font-size: 0.79rem; color: var(--text-muted); margin-top: 3px; }
+    .intern-bullets { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+    .intern-bullets li {
+      font-size: 0.84rem; color: var(--text);
+      padding-left: 14px; position: relative;
+    }
+    .intern-bullets li::before {
+      content: '·'; position: absolute; left: 3px;
+      color: var(--teal); font-weight: 700; font-size: 1.1rem; line-height: 1.4;
+    }
+
+    /* Projects */
+    .projects-list { display: flex; flex-direction: column; gap: 10px; }
+    .project-item {
+      background: rgba(234,245,248,0.38);
+      border: 1px solid rgba(74,158,175,0.12);
+      border-radius: 10px;
+      padding: 11px 13px;
+    }
+    .project-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .project-meta { font-size: 0.78rem; color: var(--teal-dark); margin-top: 2px; }
+    .project-desc { font-size: 0.83rem; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+    /* Skills */
+    .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .skill-label {
+      font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .skill-tag {
+      padding: 3px 9px; border-radius: 10px; font-size: 0.78rem;
+      background: rgba(74,158,175,0.10); color: var(--teal-dark);
+      border: 1px solid rgba(74,158,175,0.18);
+    }
+
     /* ─── FOOTER ──────────────────────────────────────────── */
     .footer {
       text-align: center;
@@ -455,6 +563,7 @@
     @media (max-width: 520px) {
       .profile-card { flex-direction: column; align-items: flex-start; }
       .info-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
       .chat-messages { min-height: 280px; max-height: 360px; }
     }
   </style>
@@ -468,10 +577,10 @@
       <div class="avatar">逸</div>
     </div>
     <div class="profile-text">
-      <h1>凌逸天</h1>
-      <p class="tagline">文化与创意研究生 · 正在写论文，也在找工作</p>
+      <h1>凌逸天 <span style="font-size:1rem;font-weight:400;color:var(--text-muted)">Ray</span></h1>
+      <p class="tagline">QS72 硕士在读 · 文化创意 × 数据分析 · 求职中</p>
       <div class="status-badges">
-        <span class="badge">📍 上海</span>
+        <span class="badge">📍 瑞典 赫尔辛堡</span>
         <span class="badge">🎓 应届研究生</span>
         <span class="badge">🔍 求职中</span>
       </div>
@@ -481,22 +590,100 @@
   <!-- About -->
   <div class="card glass">
     <h2>关于我</h2>
-    <div class="info-grid">
-      <div class="info-item">
-        <span class="label">专业方向</span>
-        <span class="value">文化与创意</span>
+
+    <!-- Education -->
+    <div class="sub-title">教育背景</div>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div class="edu-school">隆德大学 Lund University</div>
+        <div class="edu-degree">服务管理 — 文化与创意管理 · 硕士</div>
+        <div class="edu-meta">2024.8 – 2026.6（预计）· 瑞典</div>
+        <div class="edu-tags">
+          <span class="mini-tag">QS 72</span>
+          <span class="mini-tag">在读</span>
+        </div>
       </div>
-      <div class="info-item">
-        <span class="label">求职方向</span>
-        <span class="value">采购 · 文化产业</span>
+      <div class="edu-item">
+        <div class="edu-school">上海对外经贸大学 SUIBE</div>
+        <div class="edu-degree">文化产业管理 · 本科 &nbsp;｜&nbsp; 辅修金融工程</div>
+        <div class="edu-meta">2020.9 – 2024.6</div>
+        <div class="edu-tags">
+          <span class="mini-tag">GPA 3.51 / 4.0</span>
+          <span class="mini-tag">排名 2 / 36</span>
+          <span class="mini-tag">🏅 校级优秀毕业生 2024</span>
+        </div>
       </div>
-      <div class="info-item">
-        <span class="label">现在在做</span>
-        <span class="value">写毕业论文 + 找工作</span>
+    </div>
+
+    <div class="sub-divider"></div>
+
+    <!-- Internship -->
+    <div class="sub-title">实习经历</div>
+    <div class="intern-item">
+      <div class="intern-company">极星汽车 Polestar</div>
+      <div class="intern-role">间接采购助理（实习）</div>
+      <div class="intern-period">2023.4 – 2024.4</div>
+      <ul class="intern-bullets">
+        <li>协助广告 / 公关 / 运营类供应商筛选、比价与风险管理全流程</li>
+        <li>主导 200+ 份合同数字化归档，结合 SharePoint 建立在线共享表</li>
+        <li>使用 SAP、Workday 追踪支出 vs 预算，Excel + Power BI 可视化趋势</li>
+        <li>参与供应商工厂走访与跨部门 Workshop</li>
+      </ul>
+      <div class="edu-tags" style="margin-top:10px">
+        <span class="mini-tag">SAP</span>
+        <span class="mini-tag">Workday</span>
+        <span class="mini-tag">Power BI</span>
+        <span class="mini-tag">Excel</span>
+        <span class="mini-tag">SharePoint</span>
       </div>
-      <div class="info-item">
-        <span class="label">目标城市</span>
-        <span class="value">上海</span>
+    </div>
+
+    <div class="sub-divider"></div>
+
+    <!-- Projects -->
+    <div class="sub-title">代表项目</div>
+    <div class="projects-list">
+      <div class="project-item">
+        <div class="project-name">赫尔辛堡博物馆 · 长者文化参与项目</div>
+        <div class="project-meta">隆德大学 · 2025</div>
+        <div class="project-desc">包容性服务设计，深度访谈 + 实地观察，提出「城市记忆漫步」方案</div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">徽州古村落可持续发展研究</div>
+        <div class="project-meta">上海对外经贸大学 · 2023</div>
+        <div class="project-desc">研究徽州建筑设计语言，提出融合多方利益的可持续发展战略</div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">ARMA 模型月度汇率预测</div>
+        <div class="project-meta">上海对外经贸大学 · 2023</div>
+        <div class="project-desc">EViews 时间序列建模，对 2018–2023 汇率波动进行预测分析</div>
+      </div>
+    </div>
+
+    <div class="sub-divider"></div>
+
+    <!-- Skills -->
+    <div class="sub-title">技能</div>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-label">语言</div>
+        <div class="skill-tags">
+          <span class="skill-tag">普通话（母语）</span>
+          <span class="skill-tag">英语 IELTS 7.0</span>
+        </div>
+      </div>
+      <div>
+        <div class="skill-label">工具</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Excel</span>
+          <span class="skill-tag">Power BI</span>
+          <span class="skill-tag">SAP</span>
+          <span class="skill-tag">Workday</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">R</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">EViews</span>
+        </div>
       </div>
     </div>
   </div>

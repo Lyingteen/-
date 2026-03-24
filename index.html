@@ -567,6 +567,69 @@
       padding-top: 8px;
     }
 
+    /* ─── INTERESTS ACCORDION ─────────────────────────────── */
+    .interest-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .interest-item {
+      background: rgba(255,255,255,0.42);
+      border: 1px solid rgba(255,255,255,0.72);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .interest-item:hover {
+      background: rgba(255,255,255,0.62);
+      border-color: rgba(74,158,175,0.25);
+    }
+    .interest-item.open {
+      background: rgba(255,255,255,0.68);
+      border-color: rgba(74,158,175,0.38);
+      box-shadow: 0 4px 16px rgba(74,158,175,0.10);
+    }
+    .interest-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      user-select: none;
+    }
+    .interest-icon {
+      font-size: 22px;
+      width: 44px; height: 44px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(234,245,248,0.80);
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .interest-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      flex: 1;
+    }
+    .interest-arrow {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      transition: transform 0.28s ease;
+    }
+    .interest-item.open .interest-arrow { transform: rotate(180deg); }
+
+    .interest-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .interest-item.open .interest-body { max-height: 160px; }
+
+    .interest-content {
+      padding: 12px 16px 16px;
+      font-size: 0.87rem;
+      color: var(--text);
+      line-height: 1.68;
+      border-top: 1px solid rgba(74,158,175,0.12);
+    }
+
     /* ─── LANG TOGGLE ─────────────────────────────────────── */
     .lang-toggle {
       position: fixed;
@@ -740,18 +803,7 @@
   </div>
 
   <!-- Interests -->
-  <div class="card glass">
-    <h2>兴趣爱好</h2>
-    <div class="tags">
-      <span class="tag">📷 摄影（观鸟 · 街景）</span>
-      <span class="tag">🎸 吉他</span>
-      <span class="tag">🎵 二胡 · 口琴</span>
-      <span class="tag">🍝 Carbonara</span>
-      <span class="tag">🥘 东北菜</span>
-      <span class="tag">🍞 做饭</span>
-      <span class="tag">🎮 休闲游戏</span>
-    </div>
-  </div>
+  <div class="card glass" id="interestsCard"></div>
 
   <!-- Chat -->
   <div class="chat-card glass" id="chatCard">
@@ -967,6 +1019,13 @@
       initialMsg: '嗨！我是逸天。有什么想了解我的，随便问吧 😊',
       suggestions: ['你有什么特长？', '你平时喜欢做什么？', '你在找什么类型的工作？'],
       footer: '感谢看我的主页！🐱🐶🐦‍⬛',
+      interestsTitle: '兴趣爱好',
+      interests: [
+        { icon: '📷', title: '摄影', content: '曾任高中摄影俱乐部部长，擅长观鸟与街景拍摄，喜欢捕捉日常中有意思的瞬间。' },
+        { icon: '🎵', title: '音乐', content: '学过吉他、二胡、口琴，三样都在入门以上水平 😄 吉他最熟，会弹几首完整曲子。' },
+        { icon: '🍳', title: '做饭', content: '招牌菜：西红柿炒蛋、锅包肉、韩式辣牛肉汤、Carbonara。欢迎来蹭饭 🍝' },
+        { icon: '🎮', title: '游戏', content: '休闲游戏为主，偶尔打 LOL，最近在玩小丑牌（Balatro）。' },
+      ],
       about: `
         <h2>关于我</h2>
         <div class="sub-title">教育背景</div>
@@ -1049,6 +1108,13 @@
       initialMsg: "Hey! I'm Ray. Feel free to ask me anything 😊",
       suggestions: ['What are your strengths?', 'What do you enjoy doing?', 'What kind of job are you looking for?'],
       footer: 'Thanks for visiting! 🐱🐶🐦‍⬛',
+      interestsTitle: 'Interests',
+      interests: [
+        { icon: '📷', title: 'Photography', content: 'Former president of my high school photography club. Specialties: birdwatching shots and street photography.' },
+        { icon: '🎵', title: 'Music', content: 'I play guitar, erhu, and harmonica — somewhere between beginner and intermediate 😄 Guitar is my strongest.' },
+        { icon: '🍳', title: 'Cooking', content: "Signature dishes: Tomato & Egg Stir-fry, Guobaorou (Crispy Pork), Korean Spicy Beef Soup, and Carbonara 🍝" },
+        { icon: '🎮', title: 'Gaming', content: 'Mostly casual games. Occasional League of Legends, currently into Balatro (the joker card game).' },
+      ],
       about: `
         <h2>About Me</h2>
         <div class="sub-title">Education</div>
@@ -1124,6 +1190,13 @@
 
   let currentLang = 'zh';
 
+  function toggleInterest(idx) {
+    const item = document.getElementById(`int-${idx}`);
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.interest-item').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
   function setLang(lang) {
     currentLang = lang;
     const t = T[lang];
@@ -1140,6 +1213,21 @@
 
     // About card
     document.getElementById('aboutCard').innerHTML = t.about;
+
+    // Interests card
+    document.getElementById('interestsCard').innerHTML =
+      `<h2>${t.interestsTitle}</h2><div class="interest-list">` +
+      t.interests.map((item, i) => `
+        <div class="interest-item" id="int-${i}" onclick="toggleInterest(${i})">
+          <div class="interest-header">
+            <div class="interest-icon">${item.icon}</div>
+            <div class="interest-title">${item.title}</div>
+            <div class="interest-arrow">▼</div>
+          </div>
+          <div class="interest-body">
+            <div class="interest-content">${item.content}</div>
+          </div>
+        </div>`).join('') + `</div>`;
 
     // Chat
     document.getElementById('chatName').textContent = t.chatName;
@@ -1161,6 +1249,9 @@
     document.getElementById('btnZh').classList.toggle('active', lang === 'zh');
     document.getElementById('btnEn').classList.toggle('active', lang === 'en');
   }
+
+  // Initial render
+  setLang('zh');
 </script>
 </body>
 </html>

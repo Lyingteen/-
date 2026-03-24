@@ -583,8 +583,9 @@
   <div class="profile-card glass">
     <div class="avatar-wrap">
       <div class="avatar" id="profileAvatar">
-        <img src="ray_avatar.jpg" alt="Ray" onerror="this.style.display='none'">
-        逸
+        <img src="ray_avatar.jpg" alt="Ray"
+             style="object-position: center 20%"
+             onerror="this.remove(); document.getElementById('profileAvatar').textContent='逸'">
       </div>
     </div>
     <div class="profile-text">

@@ -11,8 +11,8 @@
       --teal:       #4A9EAF;
       --teal-dark:  #357A8A;
       --blue-gray:  #6B8FA3;
-      --bg:         #dff0f5;
-      --surface:    rgba(255,255,255,0.60);
+      --bg:         #b8dff0;
+      --surface:    rgba(255,255,255,0.52);
       --border:     rgba(255,255,255,0.82);
       --border-subtle: rgba(74,158,175,0.18);
       --text:       #2C3E50;
@@ -28,7 +28,7 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
                    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-      background: #dff0f5;
+      background: #b8dff0;
       color: var(--text);
       line-height: 1.6;
       min-height: 100vh;
@@ -41,18 +41,19 @@
       inset: 0;
       z-index: -1;
       background:
-        radial-gradient(ellipse 65% 55% at 12% 20%, rgba(74,158,175,0.28) 0%, transparent 60%),
-        radial-gradient(ellipse 55% 65% at 88% 78%, rgba(107,143,163,0.22) 0%, transparent 60%),
-        radial-gradient(ellipse 45% 45% at 62% 15%, rgba(160,215,230,0.30) 0%, transparent 52%),
-        radial-gradient(ellipse 50% 50% at 28% 85%, rgba(180,225,205,0.25) 0%, transparent 55%),
-        linear-gradient(140deg, #cce8f0 0%, #daf0e8 45%, #cfe4ee 100%);
-      animation: bgDrift 18s ease-in-out infinite alternate;
+        radial-gradient(ellipse 60% 50% at 10% 15%, rgba(74,185,210,0.55) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 90% 80%, rgba(80,140,200,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 40% at 65% 10%, rgba(140,210,195,0.50) 0%, transparent 50%),
+        radial-gradient(ellipse 55% 50% at 25% 88%, rgba(160,195,240,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 40% at 75% 45%, rgba(200,160,230,0.30) 0%, transparent 50%),
+        linear-gradient(135deg, #b8dff0 0%, #c5ede0 40%, #b8cef0 100%);
+      animation: bgDrift 20s ease-in-out infinite alternate;
     }
 
     @keyframes bgDrift {
-      0%   { filter: hue-rotate(0deg)   brightness(1.00); }
-      50%  { filter: hue-rotate(6deg)   brightness(1.03); }
-      100% { filter: hue-rotate(-4deg)  brightness(0.98); }
+      0%   { filter: hue-rotate(0deg)  brightness(1.00) saturate(1.0); }
+      50%  { filter: hue-rotate(8deg)  brightness(1.04) saturate(1.1); }
+      100% { filter: hue-rotate(-6deg) brightness(0.97) saturate(1.05); }
     }
 
     /* ─── LAYOUT ──────────────────────────────────────────── */

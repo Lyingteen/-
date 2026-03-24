@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>凌逸天 · 个人主页</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:       #4A9EAF;
+      --teal-dark:  #357A8A;
+      --blue-gray:  #6B8FA3;
+      --bg:         #F4F8FA;
+      --surface:    #FFFFFF;
+      --border:     #D8E8EF;
+      --text:       #2C3E50;
+      --text-muted: #7A90A0;
+      --accent-bg:  #EAF5F8;
+      --user-bubble: #4A9EAF;
+      --bot-bubble:  #FFFFFF;
+      --radius:     12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                   'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ─── HEADER / PROFILE ────────────────────────────────── */
+    .profile-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 32px 28px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .avatar-wrap {
+      flex-shrink: 0;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--blue-gray) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: -1px;
+      user-select: none;
+    }
+
+    .profile-text h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.02em;
+    }
+
+    .profile-text .tagline {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+    }
+
+    .profile-text .status-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--accent-bg);
+      color: var(--teal-dark);
+      border: 1px solid var(--border);
+    }
+
+    /* ─── SECTION CARDS ───────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+    }
+
+    .card h2 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .info-item .label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .info-item .value {
+      font-size: 0.93rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Interest tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background: var(--accent-bg);
+      color: var(--teal-dark);
+      border: 1px solid var(--border);
+    }
+
+    /* ─── CHAT ────────────────────────────────────────────── */
+    .chat-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--blue-gray));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .chat-header-text .name {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .chat-header-text .subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #48C78E;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .chat-messages {
+      flex: 1;
+      min-height: 320px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      display: flex;
+      gap: 8px;
+      max-width: 88%;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+    }
+
+    .msg-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .msg.bot .msg-avatar {
+      background: linear-gradient(135deg, var(--teal), var(--blue-gray));
+    }
+
+    .msg.user .msg-avatar {
+      background: #9BB5C7;
+    }
+
+    .bubble {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+
+    .msg.bot .bubble {
+      background: var(--bot-bubble);
+      border: 1px solid var(--border);
+      border-radius: 4px 14px 14px 14px;
+      color: var(--text);
+    }
+
+    .msg.user .bubble {
+      background: var(--user-bubble);
+      color: #fff;
+      border-radius: 14px 4px 14px 14px;
+    }
+
+    /* typing indicator */
+    .typing-dots {
+      display: flex;
+      gap: 4px;
+      padding: 6px 4px 2px;
+    }
+
+    .typing-dots span {
+      width: 7px;
+      height: 7px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: .5; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* suggested questions */
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 20px 0;
+    }
+
+    .suggestion-btn {
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--accent-bg);
+      color: var(--teal-dark);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .suggestion-btn:hover {
+      background: #D2EEF4;
+      border-color: var(--teal);
+    }
+
+    /* input area */
+    .chat-input-area {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg);
+      resize: none;
+      outline: none;
+      max-height: 120px;
+      min-height: 40px;
+      transition: border-color 0.15s;
+      line-height: 1.5;
+    }
+
+    .chat-input:focus {
+      border-color: var(--teal);
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--teal);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover { background: var(--teal-dark); }
+    .send-btn:disabled { background: var(--border); cursor: not-allowed; }
+
+    .send-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    /* error banner */
+    .error-banner {
+      background: #FFF0F0;
+      border: 1px solid #FFB3B3;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #CC3333;
+      margin: 0 20px 12px;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-top: 8px;
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .profile-card { flex-direction: column; align-items: flex-start; }
+      .info-grid { grid-template-columns: 1fr; }
+      .chat-messages { min-height: 280px; max-height: 360px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Profile -->
+  <div class="profile-card">
+    <div class="avatar-wrap">
+      <div class="avatar">逸</div>
+    </div>
+    <div class="profile-text">
+      <h1>凌逸天</h1>
+      <p class="tagline">文化与创意研究生 · 正在写论文，也在找工作</p>
+      <div class="status-badges">
+        <span class="badge">📍 上海</span>
+        <span class="badge">🎓 应届研究生</span>
+        <span class="badge">🔍 求职中</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="card">
+    <h2>关于我</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="label">专业方向</span>
+        <span class="value">文化与创意</span>
+      </div>
+      <div class="info-item">
+        <span class="label">求职方向</span>
+        <span class="value">采购 · 文化产业</span>
+      </div>
+      <div class="info-item">
+        <span class="label">现在在做</span>
+        <span class="value">写毕业论文 + 找工作</span>
+      </div>
+      <div class="info-item">
+        <span class="label">目标城市</span>
+        <span class="value">上海</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interests -->
+  <div class="card">
+    <h2>兴趣爱好</h2>
+    <div class="tags">
+      <span class="tag">📷 摄影（观鸟 · 街景）</span>
+      <span class="tag">🎸 吉他</span>
+      <span class="tag">🎵 二胡 · 口琴</span>
+      <span class="tag">🍝 Carbonara</span>
+      <span class="tag">🥘 东北菜</span>
+      <span class="tag">🍞 做饭</span>
+      <span class="tag">🎮 休闲游戏</span>
+    </div>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-card" id="chatCard">
+    <div class="chat-header">
+      <div class="chat-avatar">逸</div>
+      <div class="chat-header-text">
+        <div class="name">凌逸天（数字分身）</div>
+        <div class="subtitle">向我提问，我会尽量如实回答</div>
+      </div>
+      <div class="online-dot"></div>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-avatar">逸</div>
+        <div class="bubble">
+          嗨！我是逸天。有什么想了解我的，随便问吧 😊
+        </div>
+      </div>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+      <button class="suggestion-btn" onclick="askSuggestion(this)">你有什么特长？</button>
+      <button class="suggestion-btn" onclick="askSuggestion(this)">你平时喜欢做什么？</button>
+      <button class="suggestion-btn" onclick="askSuggestion(this)">你一般喜欢吃什么？</button>
+    </div>
+
+    <div id="errorBanner" style="display:none"></div>
+
+    <div class="chat-input-area">
+      <textarea
+        id="chatInput"
+        class="chat-input"
+        placeholder="问我点什么……"
+        rows="1"
+        onkeydown="handleKey(event)"
+        oninput="autoResize(this)"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="发送">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 凌逸天 · 由 Claude 驱动的数字分身</div>
+</div>
+
+<script>
+  const messagesEl = document.getElementById('chatMessages');
+  const inputEl    = document.getElementById('chatInput');
+  const sendBtn    = document.getElementById('sendBtn');
+  const errorBanner = document.getElementById('errorBanner');
+  const suggestions = document.getElementById('suggestions');
+
+  let history = [];   // [{role, content}]
+  let isStreaming = false;
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function askSuggestion(btn) {
+    inputEl.value = btn.textContent.trim();
+    suggestions.style.display = 'none';
+    sendMessage();
+  }
+
+  function scrollBottom() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function appendMsg(role, text) {
+    const wrap = document.createElement('div');
+    wrap.className = `msg ${role}`;
+
+    const av = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = role === 'bot' ? '逸' : '你';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = text;
+
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    messagesEl.appendChild(wrap);
+    scrollBottom();
+    return bubble;
+  }
+
+  function showTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg bot';
+    wrap.id = 'typingIndicator';
+
+    const av = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = '逸';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    messagesEl.appendChild(wrap);
+    scrollBottom();
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  function showError(msg) {
+    errorBanner.textContent = '⚠️ ' + msg;
+    errorBanner.style.display = 'block';
+    setTimeout(() => { errorBanner.style.display = 'none'; }, 5000);
+  }
+
+  async function sendMessage() {
+    const text = inputEl.value.trim();
+    if (!text || isStreaming) return;
+
+    isStreaming = true;
+    sendBtn.disabled = true;
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
+    errorBanner.style.display = 'none';
+
+    appendMsg('user', text);
+    history.push({ role: 'user', content: text });
+
+    showTyping();
+
+    try {
+      const resp = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${resp.status}`);
+      }
+
+      removeTyping();
+      const botBubble = appendMsg('bot', '');
+      let fullText = '';
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+
+        const lines = buf.split('\n');
+        buf = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const payload = line.slice(6).trim();
+          if (payload === '[DONE]') break;
+
+          try {
+            const parsed = JSON.parse(payload);
+            if (parsed.error) { showError(parsed.error); break; }
+            if (parsed.text) {
+              fullText += parsed.text;
+              botBubble.textContent = fullText;
+              scrollBottom();
+            }
+          } catch (_) {}
+        }
+      }
+
+      if (fullText) history.push({ role: 'assistant', content: fullText });
+
+    } catch (err) {
+      removeTyping();
+      showError(err.message || '连接失败，请稍后再试');
+    } finally {
+      isStreaming = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    }
+  }
+</script>
+</body>
+</html>

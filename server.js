@@ -1,5 +1,5 @@
 import express from 'express';
-import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -48,28 +48,35 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: '无效的消息格式' });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.SILICON_API_KEY;
   if (!apiKey) {
-    return res.status(500).json({ error: '未配置 API Key，请在环境变量中设置 ANTHROPIC_API_KEY' });
+    return res.status(500).json({ error: '未配置 API Key，请在环境变量中设置 SILICON_API_KEY' });
   }
 
-  const client = new Anthropic({ apiKey });
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.siliconflow.cn/v1',
+  });
 
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
 
   try {
-    const stream = client.messages.stream({
-      model: 'claude-opus-4-6',
+    const stream = await client.chat.completions.create({
+      model: 'Qwen/Qwen3-8B',
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      messages: messages,
+      stream: true,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...messages,
+      ],
     });
 
-    for await (const event of stream) {
-      if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-        res.write(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`);
+    for await (const chunk of stream) {
+      const text = chunk.choices[0]?.delta?.content;
+      if (text) {
+        res.write(`data: ${JSON.stringify({ text })}\n\n`);
       }
     }
 
@@ -84,5 +91,5 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`\n🚀 服务已启动: http://localhost:${PORT}`);
-  console.log(`📝 请确保已设置环境变量 ANTHROPIC_API_KEY\n`);
+  console.log(`📝 请确保已设置环境变量 SILICON_API_KEY\n`);
 });

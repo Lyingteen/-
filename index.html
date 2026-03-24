@@ -567,6 +567,39 @@
       padding-top: 8px;
     }
 
+    /* ─── LANG TOGGLE ─────────────────────────────────────── */
+    .lang-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 200;
+      display: flex;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(16px) saturate(160%);
+      -webkit-backdrop-filter: blur(16px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 20px;
+      box-shadow: 0 4px 16px rgba(40,80,100,0.12);
+      overflow: hidden;
+    }
+    .lang-btn {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+    .lang-btn.active {
+      background: var(--teal);
+      color: #fff;
+      border-radius: 20px;
+    }
+
     /* ─── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 520px) {
       .profile-card { flex-direction: column; align-items: flex-start; }
@@ -577,6 +610,12 @@
   </style>
 </head>
 <body>
+
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btnZh" onclick="setLang('zh')">中文</button>
+  <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+</div>
+
 <div class="page">
 
   <!-- Profile -->
@@ -589,18 +628,18 @@
       </div>
     </div>
     <div class="profile-text">
-      <h1>凌逸天 <span style="font-size:1rem;font-weight:400;color:var(--text-muted)">Ray</span></h1>
-      <p class="tagline">QS72 硕士在读 · 文化创意 × 数据分析 · 求职中</p>
+      <h1 id="profileName">凌逸天 <span id="profileSubName" style="font-size:1rem;font-weight:400;color:var(--text-muted)">Ray</span></h1>
+      <p class="tagline" id="profileTagline">QS72 硕士在读 · 文化创意 × 数据分析 · 求职中</p>
       <div class="status-badges">
-        <span class="badge">📍 瑞典 赫尔辛堡</span>
-        <span class="badge">🎓 应届研究生</span>
-        <span class="badge">🔍 求职中</span>
+        <span class="badge" id="badge1">📍 瑞典 赫尔辛堡</span>
+        <span class="badge" id="badge2">🎓 应届研究生</span>
+        <span class="badge" id="badge3">🔍 求职中</span>
       </div>
     </div>
   </div>
 
   <!-- About -->
-  <div class="card glass">
+  <div class="card glass" id="aboutCard">
     <h2>关于我</h2>
 
     <!-- Education -->
@@ -721,8 +760,8 @@
         <img src="ray_avatar.jpg" alt="Ray" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
       </div>
       <div class="chat-header-text">
-        <div class="name">凌逸天（数字分身）</div>
-        <div class="subtitle">向我提问，我会尽量如实回答</div>
+        <div class="name" id="chatName">凌逸天（数字分身）</div>
+        <div class="subtitle" id="chatSubtitle">向我提问，我会尽量如实回答</div>
       </div>
       <div class="online-dot"></div>
     </div>
@@ -731,7 +770,7 @@
       <div class="msg bot">
         <div class="msg-avatar">逸</div>
         <div class="bubble">
-          嗨！我是逸天。有什么想了解我的，随便问吧 😊
+          <span id="initialMsg">嗨！我是逸天。有什么想了解我的，随便问吧 😊</span>
         </div>
       </div>
     </div>
@@ -759,7 +798,7 @@
     </div>
   </div>
 
-  <div class="footer">© 2025 凌逸天 · 由 Claude 驱动的数字分身</div>
+  <div class="footer" id="footer">感谢看我的主页！🐱🐶🐦‍⬛</div>
 </div>
 
 <script>
@@ -913,6 +952,214 @@
       sendBtn.disabled = false;
       inputEl.focus();
     }
+  }
+
+  // ─── i18n ─────────────────────────────────────────────────
+  const T = {
+    zh: {
+      pageTitle: '凌逸天 · 个人主页',
+      name: '凌逸天', subName: 'Ray',
+      tagline: 'QS72 硕士在读 · 文化创意 × 数据分析 · 求职中',
+      badge1: '📍 瑞典 赫尔辛堡', badge2: '🎓 应届研究生', badge3: '🔍 求职中',
+      chatName: '凌逸天（数字分身）',
+      chatSubtitle: '向我提问，我会尽量如实回答',
+      chatPlaceholder: '问我点什么……',
+      initialMsg: '嗨！我是逸天。有什么想了解我的，随便问吧 😊',
+      suggestions: ['你有什么特长？', '你平时喜欢做什么？', '你在找什么类型的工作？'],
+      footer: '感谢看我的主页！🐱🐶🐦‍⬛',
+      about: `
+        <h2>关于我</h2>
+        <div class="sub-title">教育背景</div>
+        <div class="edu-list">
+          <div class="edu-item">
+            <div class="edu-school">隆德大学 Lund University</div>
+            <div class="edu-degree">服务管理 — 文化与创意管理 · 硕士</div>
+            <div class="edu-meta">2024.8 – 2026.6（预计）· 瑞典</div>
+            <div class="edu-tags"><span class="mini-tag">QS 72</span><span class="mini-tag">在读</span></div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-school">上海对外经贸大学 SUIBE</div>
+            <div class="edu-degree">文化产业管理 · 本科 &nbsp;｜&nbsp; 辅修金融工程</div>
+            <div class="edu-meta">2020.9 – 2024.6</div>
+            <div class="edu-tags">
+              <span class="mini-tag">GPA 3.51 / 4.0</span>
+              <span class="mini-tag">排名 2 / 36</span>
+              <span class="mini-tag">🏅 校级优秀毕业生 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">实习经历</div>
+        <div class="intern-item">
+          <div class="intern-company">极星汽车 Polestar</div>
+          <div class="intern-role">间接采购助理（实习）</div>
+          <div class="intern-period">2023.4 – 2024.4</div>
+          <ul class="intern-bullets">
+            <li>协助广告 / 公关 / 运营类供应商筛选、比价与风险管理全流程</li>
+            <li>主导 200+ 份合同数字化归档，结合 SharePoint 建立在线共享表</li>
+            <li>使用 SAP、Workday 追踪支出 vs 预算，Excel + Power BI 可视化趋势</li>
+            <li>参与供应商工厂走访与跨部门 Workshop</li>
+          </ul>
+          <div class="edu-tags" style="margin-top:10px">
+            <span class="mini-tag">SAP</span><span class="mini-tag">Workday</span>
+            <span class="mini-tag">Power BI</span><span class="mini-tag">Excel</span><span class="mini-tag">SharePoint</span>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">代表项目</div>
+        <div class="projects-list">
+          <div class="project-item">
+            <div class="project-name">赫尔辛堡博物馆 · 长者文化参与项目</div>
+            <div class="project-meta">隆德大学 · 2025</div>
+            <div class="project-desc">包容性服务设计，深度访谈 + 实地观察，提出「城市记忆漫步」方案</div>
+          </div>
+          <div class="project-item">
+            <div class="project-name">徽州古村落可持续发展研究</div>
+            <div class="project-meta">上海对外经贸大学 · 2023</div>
+            <div class="project-desc">研究徽州建筑设计语言，提出融合多方利益的可持续发展战略</div>
+          </div>
+          <div class="project-item">
+            <div class="project-name">ARMA 模型月度汇率预测</div>
+            <div class="project-meta">上海对外经贸大学 · 2023</div>
+            <div class="project-desc">EViews 时间序列建模，对 2018–2023 汇率波动进行预测分析</div>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">技能</div>
+        <div class="skills-grid">
+          <div><div class="skill-label">语言</div><div class="skill-tags">
+            <span class="skill-tag">普通话（母语）</span><span class="skill-tag">英语 IELTS 7.0</span>
+          </div></div>
+          <div><div class="skill-label">工具</div><div class="skill-tags">
+            <span class="skill-tag">Excel</span><span class="skill-tag">Power BI</span>
+            <span class="skill-tag">SAP</span><span class="skill-tag">Workday</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">R</span>
+            <span class="skill-tag">Python</span><span class="skill-tag">EViews</span>
+          </div></div>
+        </div>`
+    },
+    en: {
+      pageTitle: 'Ray Ling · Personal Homepage',
+      name: 'Ray', subName: 'Yitian Ling',
+      tagline: 'QS72 Grad Student · Cultural Creativity × Data Analytics · Open to Work',
+      badge1: '📍 Helsingborg, Sweden', badge2: '🎓 Recent Grad (2026)', badge3: '🔍 Open to Work',
+      chatName: 'Ray (Digital Avatar)',
+      chatSubtitle: "Ask me anything — I'll answer honestly",
+      chatPlaceholder: 'Ask me something…',
+      initialMsg: "Hey! I'm Ray. Feel free to ask me anything 😊",
+      suggestions: ['What are your strengths?', 'What do you enjoy doing?', 'What kind of job are you looking for?'],
+      footer: 'Thanks for visiting! 🐱🐶🐦‍⬛',
+      about: `
+        <h2>About Me</h2>
+        <div class="sub-title">Education</div>
+        <div class="edu-list">
+          <div class="edu-item">
+            <div class="edu-school">Lund University 隆德大学</div>
+            <div class="edu-degree">MSc Service Management — Culture &amp; Creative Management</div>
+            <div class="edu-meta">Aug 2024 – Jun 2026 (expected) · Sweden</div>
+            <div class="edu-tags"><span class="mini-tag">QS 72</span><span class="mini-tag">In Progress</span></div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-school">Shanghai University of Int'l Business &amp; Economics (SUIBE)</div>
+            <div class="edu-degree">BM Cultural Industry Management &nbsp;|&nbsp; Minor: Financial Engineering</div>
+            <div class="edu-meta">Sep 2020 – Jun 2024</div>
+            <div class="edu-tags">
+              <span class="mini-tag">GPA 3.51 / 4.0</span>
+              <span class="mini-tag">Ranked 2 / 36</span>
+              <span class="mini-tag">🏅 Excellent Graduate Award 2024</span>
+            </div>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">Internship</div>
+        <div class="intern-item">
+          <div class="intern-company">Polestar 极星汽车</div>
+          <div class="intern-role">Indirect Procurement Assistant (Intern)</div>
+          <div class="intern-period">Apr 2023 – Apr 2024</div>
+          <ul class="intern-bullets">
+            <li>Assisted end-to-end supplier screening, price benchmarking &amp; risk management for advertising, PR &amp; ops vendors</li>
+            <li>Led digitization of 200+ contracts and built an online tracking system via SharePoint</li>
+            <li>Tracked spend vs. budget in SAP &amp; Workday; visualized trends with Excel + Power BI</li>
+            <li>Participated in supplier factory visits and cross-functional workshops</li>
+          </ul>
+          <div class="edu-tags" style="margin-top:10px">
+            <span class="mini-tag">SAP</span><span class="mini-tag">Workday</span>
+            <span class="mini-tag">Power BI</span><span class="mini-tag">Excel</span><span class="mini-tag">SharePoint</span>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">Featured Projects</div>
+        <div class="projects-list">
+          <div class="project-item">
+            <div class="project-name">Elderly Cultural Engagement — Helsingborg Museum</div>
+            <div class="project-meta">Lund University · 2025</div>
+            <div class="project-desc">Inclusive service design via in-depth interviews &amp; field observation; proposed a "City Memory Walk" program</div>
+          </div>
+          <div class="project-item">
+            <div class="project-name">Sustainable Development of Huizhou Ancient Villages</div>
+            <div class="project-meta">SUIBE · 2023</div>
+            <div class="project-desc">Researched Huizhou architectural language; proposed a multi-stakeholder sustainable development strategy</div>
+          </div>
+          <div class="project-item">
+            <div class="project-name">Monthly Exchange Rate Forecasting with ARMA Model</div>
+            <div class="project-meta">SUIBE · 2023</div>
+            <div class="project-desc">Time-series modeling in EViews; forecasted exchange rate volatility from 2018–2023</div>
+          </div>
+        </div>
+        <div class="sub-divider"></div>
+        <div class="sub-title">Skills</div>
+        <div class="skills-grid">
+          <div><div class="skill-label">Languages</div><div class="skill-tags">
+            <span class="skill-tag">Mandarin (Native)</span><span class="skill-tag">English IELTS 7.0</span>
+          </div></div>
+          <div><div class="skill-label">Tools</div><div class="skill-tags">
+            <span class="skill-tag">Excel</span><span class="skill-tag">Power BI</span>
+            <span class="skill-tag">SAP</span><span class="skill-tag">Workday</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">R</span>
+            <span class="skill-tag">Python</span><span class="skill-tag">EViews</span>
+          </div></div>
+        </div>`
+    }
+  };
+
+  let currentLang = 'zh';
+
+  function setLang(lang) {
+    currentLang = lang;
+    const t = T[lang];
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    document.title = t.pageTitle;
+
+    // Profile
+    document.getElementById('profileName').firstChild.textContent = t.name + ' ';
+    document.getElementById('profileSubName').textContent = t.subName;
+    document.getElementById('profileTagline').textContent = t.tagline;
+    document.getElementById('badge1').textContent = t.badge1;
+    document.getElementById('badge2').textContent = t.badge2;
+    document.getElementById('badge3').textContent = t.badge3;
+
+    // About card
+    document.getElementById('aboutCard').innerHTML = t.about;
+
+    // Chat
+    document.getElementById('chatName').textContent = t.chatName;
+    document.getElementById('chatSubtitle').textContent = t.chatSubtitle;
+    document.getElementById('chatInput').placeholder = t.chatPlaceholder;
+    const initMsg = document.getElementById('initialMsg');
+    if (initMsg) initMsg.textContent = t.initialMsg;
+
+    // Suggestions
+    const sugg = document.getElementById('suggestions');
+    if (sugg) sugg.innerHTML = t.suggestions
+      .map(s => `<button class="suggestion-btn" onclick="askSuggestion(this)">${s}</button>`)
+      .join('');
+
+    // Footer
+    document.getElementById('footer').textContent = t.footer;
+
+    // Toggle buttons
+    document.getElementById('btnZh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
   }
 </script>
 </body>

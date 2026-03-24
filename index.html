@@ -92,6 +92,7 @@
       width: 88px;
       height: 88px;
       border-radius: 50%;
+      overflow: hidden;
       background: linear-gradient(135deg, var(--teal) 0%, var(--blue-gray) 100%);
       display: flex;
       align-items: center;
@@ -103,6 +104,13 @@
       user-select: none;
       border: 3px solid rgba(255,255,255,0.85);
       box-shadow: 0 4px 18px rgba(74,158,175,0.30);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .profile-text h1 {
@@ -574,7 +582,10 @@
   <!-- Profile -->
   <div class="profile-card glass">
     <div class="avatar-wrap">
-      <div class="avatar">逸</div>
+      <div class="avatar" id="profileAvatar">
+        <img src="ray_avatar.jpg" alt="Ray" onerror="this.style.display='none'">
+        逸
+      </div>
     </div>
     <div class="profile-text">
       <h1>凌逸天 <span style="font-size:1rem;font-weight:400;color:var(--text-muted)">Ray</span></h1>
@@ -705,7 +716,9 @@
   <!-- Chat -->
   <div class="chat-card glass" id="chatCard">
     <div class="chat-header">
-      <div class="chat-avatar">逸</div>
+      <div class="chat-avatar" style="overflow:hidden">
+        <img src="ray_avatar.jpg" alt="Ray" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.style.display='none'">
+      </div>
       <div class="chat-header-text">
         <div class="name">凌逸天（数字分身）</div>
         <div class="subtitle">向我提问，我会尽量如实回答</div>
